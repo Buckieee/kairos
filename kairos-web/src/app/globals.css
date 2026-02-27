@@ -1,0 +1,304 @@
+@import "tailwindcss";
+
+/* ════════════════════════════════════════════════════
+   Kairos — INSANE Editorial Design System
+   White bg, black text, purple accent, dramatic motion
+   ════════════════════════════════════════════════════ */
+
+@theme inline {
+  --color-background: #FAFAFA;
+  --color-foreground: #0A0A0B;
+  --color-muted: #6B6B6B;
+  --color-muted-light: #A0A0A0;
+  --color-border: rgba(0, 0, 0, 0.06);
+  --color-border-hover: rgba(0, 0, 0, 0.14);
+  --color-card: #FFFFFF;
+  --color-card-hover: #F8F8F8;
+  --color-surface: #0A0A0B;
+  --color-accent: #1E40AF;
+  --color-accent-soft: rgba(30, 64, 175, 0.06);
+  --color-accent-bright: #3B82F6;
+  --color-warm: #60A5FA;
+  --color-deep-blue: #1E3A8A;
+  --color-violet: #1E40AF;
+  --color-success: #16A34A;
+  --color-error: #DC2626;
+
+  --font-heading: 'Space Grotesk', var(--font-space), sans-serif;
+  --font-body: 'Inter', var(--font-inter), sans-serif;
+
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-fade-in: fade-in 0.6s ease forwards;
+}
+
+/* ── Keyframes ─────────────────────────────────────── */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-16px) rotate(3deg);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes orbit {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes line-expand {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* ── Base ──────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Section spacing ────────────────────────────────── */
+.section-padding {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+  }
+}
+
+/* ── Display type — MASSIVE ───────────────────────── */
+.text-display {
+  font-family: var(--font-heading);
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+}
+
+.text-headline {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.text-subheadline {
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 300;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+/* ── Gradients ────────────────────────────────────── */
+.gradient-accent {
+  background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 40%, #3B82F6 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Card ─────────────────────────────────────────── */
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 1.25rem;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.card:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+/* ── Dark section (inverted) ──────────────────────── */
+.section-dark {
+  background: var(--color-surface);
+  color: #F0F0F0;
+}
+
+.section-dark .text-foreground {
+  color: #F0F0F0;
+}
+
+.section-dark .text-muted {
+  color: #999;
+}
+
+.section-dark .text-muted-light {
+  color: #666;
+}
+
+.section-dark .border-border {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Marquee ──────────────────────────────────────── */
+.marquee-track {
+  display: flex;
+  animation: marquee 30s linear infinite;
+  width: max-content;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Glow dot ─────────────────────────────────────── */
+.glow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent), 0 0 16px rgba(30, 64, 175, 0.2);
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* ── Scrollbar ────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ── Selection ────────────────────────────────────── */
+::selection {
+  background: var(--color-accent);
+  color: white;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ── Horizontal rule animation ────────────────────── */
+.hr-animate {
+  height: 1px;
+  background: var(--color-foreground);
+  transform-origin: left;
+  animation: line-expand 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Ticker (running text) ────────────────────────── */
+.ticker-track {
+  display: flex;
+  animation: ticker 20s linear infinite;
+  width: max-content;
+}

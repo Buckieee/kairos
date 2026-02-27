@@ -1,0 +1,11 @@
+{
+    "name": "kairos",
+    "version": "1.0.0",
+    "description": "Kairos monorepo — run frontend + backend together",
+    "private": true,
+    "scripts": {
+        "dev": "npx -y concurrently --names API,WEB --prefix-colors blue,magenta \"npm run dev --prefix kairos-api\" \"npm run dev --prefix kairos-web\"",
+        "dev:api": "npm run dev --prefix kairos-api",
+        "dev:web": "npm run dev --prefix kairos-web"
+    }
+}
