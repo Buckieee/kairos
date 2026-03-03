@@ -1,0 +1,428 @@
+/* ════════════════════════════════════════════════════
+   Careers Page — Visual Enhancements
+   ════════════════════════════════════════════════════ */
+
+/* ── Section Labels ────────────────────────────────── */
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: #2D4EFF;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: block;
+  font-weight: 500;
+}
+
+/* ── Scroll Animation ──────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.fade-up.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+.stagger-6 { transition-delay: 0.6s; }
+
+/* ── Card Lift Effect ──────────────────────────────── */
+.card-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* ── Standards Cards ───────────────────────────────── */
+.standards-card {
+  background: #F5F3F0;
+  color: var(--color-foreground);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  position: relative;
+  border: 1px solid transparent;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.standards-card:hover {
+  background: #EDEBE7;
+  border-color: rgba(45, 78, 255, 0.2);
+}
+
+.standards-card-number {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2D4EFF;
+  opacity: 0.2;
+}
+
+.standards-card h3 {
+  color: var(--color-foreground);
+  margin-bottom: 0.75rem;
+  font-size: 1.125rem;
+}
+
+.standards-card p {
+  color: var(--color-muted);
+}
+
+/* ── Bento Grid ────────────────────────────────────── */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .bento-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.bento-card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.bento-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(45, 78, 255, 0.02) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.bento-card:hover::before {
+  opacity: 1;
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-border-hover);
+}
+
+.bento-item-featured {
+  grid-column: span 2;
+}
+
+@media (min-width: 768px) {
+  .bento-item-featured {
+    grid-column: span 1;
+    grid-row: span 2;
+  }
+}
+
+.bento-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.bento-card p {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+/* ── Pill Tags ──────────────────────────────────────── */
+.pill-tag {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  margin: 0.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pill-tag:hover {
+  transform: translateY(-2px);
+}
+
+.pill-tag-for {
+  background: rgba(45, 78, 255, 0.08);
+  color: #2D4EFF;
+  border: 1px solid rgba(45, 78, 255, 0.25);
+}
+
+.pill-tag-not-for {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--color-muted);
+  text-decoration: line-through;
+  opacity: 0.6;
+  border: 1px solid var(--color-border);
+}
+
+/* ── Training Stepper ───────────────────────────────── */
+.training-stepper {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.stepper-node {
+  position: relative;
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-left: 2rem;
+}
+
+.stepper-node:last-child {
+  margin-bottom: 0;
+}
+
+.stepper-node::before {
+  content: '';
+  position: absolute;
+  left: 0.75rem;
+  top: 2rem;
+  bottom: -2rem;
+  width: 2px;
+  background: var(--color-border);
+  transition: background 0.3s ease;
+}
+
+.stepper-node:last-child::before {
+  display: none;
+}
+
+.stepper-node.is-visible::before {
+  background: linear-gradient(to bottom, #2D4EFF, var(--color-border));
+}
+
+.stepper-node.is-visible::before {
+  animation: stepper-line 0.8s ease forwards;
+}
+
+@keyframes stepper-line {
+  from {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  to {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+}
+
+.stepper-circle {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--color-card);
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.stepper-node:hover .stepper-circle,
+.stepper-node.is-visible .stepper-circle {
+  background: #2D4EFF;
+  border-color: #2D4EFF;
+  color: white;
+  transform: scale(1.1);
+}
+
+.stepper-content {
+  flex: 1;
+  padding-top: 0.25rem;
+}
+
+.stepper-title {
+  font-weight: 600;
+  color: var(--color-foreground);
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.stepper-description {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+/* ── Assessment Brief Card ──────────────────────────── */
+.assessment-brief {
+  background: #F5F3F0;
+  color: var(--color-foreground);
+  border-radius: 1rem;
+  padding: 2rem;
+  border-left: 4px solid #2D4EFF;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.assessment-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: #2D4EFF;
+  color: white;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.assessment-brief h3 {
+  color: var(--color-foreground);
+  margin-bottom: 1.5rem;
+}
+
+.assessment-brief p {
+  color: var(--color-muted);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.assessment-brief ul {
+  list-style: none;
+  padding: 0;
+}
+
+.assessment-brief li {
+  color: rgba(255, 255, 255, 0.7);
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.assessment-brief li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #2D4EFF;
+}
+
+/* ── Rubric Rows ───────────────────────────────────── */
+.rubric-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.rubric-label {
+  flex: 0 0 40%;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.rubric-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.rubric-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2D4EFF, rgba(45, 78, 255, 0.6));
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+/* ── FAQ Enhancements ────────────────────────────────── */
+.faq-card {
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.faq-card.open {
+  background: rgba(45, 78, 255, 0.03);
+  border-left: 3px solid #2D4EFF;
+}
+
+.faq-icon {
+  transition: transform 0.3s ease;
+}
+
+.faq-card.open .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  transition: opacity 0.3s ease;
+}
+
+/* ── Who This Is For Split ──────────────────────────── */
+.fit-split {
+  position: relative;
+}
+
+.fit-split::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--color-border);
+  transform: translateX(-50%);
+}
+
+@media (max-width: 768px) {
+  .fit-split::after {
+    display: none;
+  }
+}
+
+/* ── Responsive Adjustments ─────────────────────────── */
+@media (max-width: 768px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .bento-item-featured {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  
+  .training-stepper {
+    padding-left: 0;
+  }
+  
+  .stepper-node {
+    padding-left: 0;
+  }
+  
+  .stepper-node::before {
+    display: none;
+  }
+}
