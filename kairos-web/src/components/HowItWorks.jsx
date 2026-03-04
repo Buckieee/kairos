@@ -13,7 +13,7 @@ export default function HowItWorks() {
                     whileInView={{ scaleX: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="w-16 h-[2px] bg-foreground origin-left mb-8"
+                    className="w-16 h-[2px] bg-[#E11D48] origin-left mb-8"
                 />
                 <motion.h2
                     initial={{ opacity: 0, y: 30 }}
@@ -59,8 +59,8 @@ export default function HowItWorks() {
                             className="relative pl-24 sm:pl-28 py-12 sm:py-16 border-b border-border group"
                         >
                             {/* Number circle */}
-                            <div className="absolute left-0 top-12 sm:top-16 flex items-center justify-center w-14 h-14 sm:w-18 sm:h-18 rounded-full border-2 border-foreground/10 bg-background z-10 group-hover:border-accent group-hover:bg-accent/5 transition-all duration-500">
-                                <span className="text-lg sm:text-xl font-heading font-bold text-foreground/40 group-hover:text-accent transition-colors duration-500">
+                            <div className="absolute left-0 top-12 sm:top-16 flex items-center justify-center w-14 h-14 sm:w-18 sm:h-18 rounded-full border-2 border-foreground/10 bg-background z-10 group-hover:border-[#E11D48] group-hover:bg-[#E11D48]/8 transition-all duration-500">
+                                <span className="text-lg sm:text-xl font-heading font-bold text-foreground/40 group-hover:text-[#E11D48] transition-colors duration-500">
                                     {String(i + 1).padStart(2, '0')}
                                 </span>
                             </div>

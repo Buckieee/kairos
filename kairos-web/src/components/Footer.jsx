@@ -15,7 +15,7 @@ export default function Footer() {
                             Kairos
                         </a>
                         <p className="mt-4 text-sm text-muted max-w-xs leading-relaxed">
-                            Managed execution studio for startups and SMEs. UK-based.
+                            Managed execution studio for Startups and Businesses.
                         </p>
                     </div>
 

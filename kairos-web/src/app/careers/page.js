@@ -1,13 +1,14 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import TrackSelector from '@/components/ui/TrackSelector';
 import Accordion from '@/components/ui/Accordion';
 import StickyCTA from '@/components/ui/StickyCTA';
 import Button from '@/components/ui/Button';
+import { supabase } from '@/lib/supabaseClient';
 import './careers.css';
 
 // ─── SEO Metadata ──────────────────────────────────────
@@ -175,7 +176,7 @@ const trainingSprint = {
 const howItWorks = [
     {
         num: '01',
-        title: 'Apply',
+        title: 'Set up your profile',
         desc: 'Send your portfolio and a short note about what you want to build. No cover letters. We review within 5 business days.',
     },
     {
@@ -186,7 +187,7 @@ const howItWorks = [
     {
         num: '03',
         title: 'Training Sprint',
-        desc: 'Accepted builders join our Training Sprint. You learn our tools, standards, and delivery process. Typically 2-4 weeks, paid at your project rate.',
+        desc: 'If required based on our review, you may be placed into a 2–4 week Training Sprint to align with our tools, standards, and delivery process.',
     },
     {
         num: '04',
@@ -300,43 +301,83 @@ function ApplicationForm() {
         portfolio: '',
         message: '',
     });
+    const [resumeFile, setResumeFile] = useState(null);
     const [status, setStatus] = useState('idle');
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!supabase) {
+            console.error('Supabase client not initialized. Check your environment variables.');
+            setStatus('error');
+            return;
+        }
+
         setStatus('loading');
         try {
-            const payload = { ...form };
-            if (!payload.track) delete payload.track;
-            if (!payload.portfolio) delete payload.portfolio;
+            let resume_url = null;
 
-            const res = await fetch(`${API_URL}/careers`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
-            if (!res.ok) throw new Error('Failed');
+            // 1. Upload resume to Supabase Storage if present
+            if (resumeFile) {
+                const fileExt = resumeFile.name.split('.').pop();
+                const fileName = `${Math.random()}-${Date.now()}.${fileExt}`;
+                const filePath = `resumes/${fileName}`;
+
+                const { error: uploadError, data } = await supabase.storage
+                    .from('resumes')
+                    .upload(filePath, resumeFile);
+
+                if (uploadError) throw uploadError;
+
+                // Get public URL or just store the path
+                const { data: urlData } = supabase.storage
+                    .from('resumes')
+                    .getPublicUrl(filePath);
+
+                resume_url = urlData.publicUrl;
+            }
+
+            // 2. Insert application into public.applications table
+            const { error: insertError } = await supabase
+                .from('applications')
+                .insert([
+                    {
+                        name: form.name,
+                        email: form.email,
+                        track: form.track || null,
+                        portfolio: form.portfolio || null,
+                        message: form.message,
+                        resume_url: resume_url
+                    }
+                ]);
+
+            if (insertError) throw insertError;
+
             setStatus('success');
             setForm({ name: '', email: '', track: '', portfolio: '', message: '' });
-        } catch {
+            setResumeFile(null);
+            // Reset file input manually if needed (using a ref would be better but this works for simple state)
+            e.target.reset();
+        } catch (error) {
+            console.error('Submission error:', error);
             setStatus('error');
         }
     };
 
     return (
         <motion.div
-                id="apply"
+            id="apply"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-                className="rounded-2xl bg-[#F5F3F0] p-8 sm:p-10 fade-up"
+            className="rounded-2xl bg-[#F5F3F0] p-8 sm:p-10 fade-up"
         >
-                <span className="section-label">// APPLY</span>
+
             <h2 className="font-heading text-xl sm:text-2xl font-bold text-foreground mb-2">
-                    Apply to the Studio
+                Apply to the Studio
             </h2>
             <p className="text-sm text-foreground/50 mb-8">
                 No cover letters. Just your info and a short note about what you&apos;re good at.
@@ -348,29 +389,29 @@ function ApplicationForm() {
                         <label htmlFor="name" className="sr-only">
                             Your name
                         </label>
-                    <input
+                        <input
                             id="name"
-                        type="text"
-                        placeholder="Your name *"
-                        required
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                            type="text"
+                            placeholder="Your name *"
+                            required
+                            value={form.name}
+                            onChange={(e) => setForm({ ...form, name: e.target.value })}
                             className={`${inputClass} focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2`}
-                    />
+                        />
                     </div>
                     <div>
                         <label htmlFor="email" className="sr-only">
                             Email address
                         </label>
-                    <input
+                        <input
                             id="email"
-                        type="email"
-                        placeholder="Email *"
-                        required
-                        value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                            type="email"
+                            placeholder="Email *"
+                            required
+                            value={form.email}
+                            onChange={(e) => setForm({ ...form, email: e.target.value })}
                             className={`${inputClass} focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2`}
-                    />
+                        />
                     </div>
                 </div>
 
@@ -379,7 +420,7 @@ function ApplicationForm() {
                         <label htmlFor="track" className="sr-only">
                             Choose your track
                         </label>
-                    <select
+                        <select
                             id="track"
                             value={form.track}
                             onChange={(e) => setForm({ ...form, track: e.target.value })}
@@ -392,20 +433,53 @@ function ApplicationForm() {
                                 </option>
                             ))}
                             <option value="Not sure">Not sure</option>
-                    </select>
+                        </select>
                     </div>
                     <div>
                         <label htmlFor="portfolio" className="sr-only">
                             Portfolio or LinkedIn URL
                         </label>
-                    <input
+                        <input
                             id="portfolio"
-                        type="url"
-                        placeholder="Portfolio / LinkedIn URL"
-                        value={form.portfolio}
-                        onChange={(e) => setForm({ ...form, portfolio: e.target.value })}
+                            type="url"
+                            placeholder="Portfolio / LinkedIn URL"
+                            value={form.portfolio}
+                            onChange={(e) => setForm({ ...form, portfolio: e.target.value })}
                             className={`${inputClass} focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2`}
-                    />
+                        />
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label htmlFor="resume" className="sr-only">
+                            Attach Resume (PDF)
+                        </label>
+                        <div className="relative">
+                            <input
+                                id="resume"
+                                type="file"
+                                accept=".pdf"
+                                onChange={(e) => setResumeFile(e.target.files[0])}
+                                className="hidden"
+                            />
+                            <label
+                                htmlFor="resume"
+                                className={`${inputClass} cursor-pointer flex items-center justify-between group`}
+                            >
+                                <span className={!resumeFile ? 'text-foreground/30' : 'text-foreground'}>
+                                    {resumeFile ? resumeFile.name : 'Attach Resume (PDF) *'}
+                                </span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-foreground/30 group-hover:text-foreground/50 transition-colors">
+                                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </label>
+                        </div>
+                    </div>
+                    <div className="flex items-center">
+                        <p className="text-[10px] text-foreground/30 uppercase tracking-widest px-1">
+                            Recommended: PDF only
+                        </p>
                     </div>
                 </div>
 
@@ -413,26 +487,26 @@ function ApplicationForm() {
                     <label htmlFor="message" className="sr-only">
                         What do you want to build with us?
                     </label>
-                <textarea
+                    <textarea
                         id="message"
-                    placeholder="What do you want to build with us? *"
-                    required
-                    rows={4}
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                        placeholder="What do you want to build with us? *"
+                        required
+                        rows={4}
+                        value={form.message}
+                        onChange={(e) => setForm({ ...form, message: e.target.value })}
                         className={`${inputClass} resize-none focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2`}
-                />
+                    />
                 </div>
 
                 <div className="flex flex-wrap items-center gap-4 pt-2">
-                    <button
+                    <Button
                         type="submit"
                         disabled={status === 'loading'}
-                        className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-sm tracking-wide bg-foreground text-background hover:bg-foreground/90 transition-colors duration-200 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+                        variant="primary"
                         aria-label={status === 'loading' ? 'Submitting application' : 'Submit application'}
                     >
                         {status === 'loading' ? 'Submitting…' : 'Submit Application'}
-                    </button>
+                    </Button>
 
                     {status === 'success' && (
                         <span className="text-sm text-green-600 font-medium" role="status" aria-live="polite">
@@ -441,7 +515,7 @@ function ApplicationForm() {
                     )}
                     {status === 'error' && (
                         <span className="text-sm text-red-500 font-medium">
-                            Something went wrong. Try again or email careers@kairos.studio.
+                            {!supabase ? 'Integration error: Supabase credentials missing.' : 'Something went wrong. Try again or email careers@kairos.studio.'}
                         </span>
                     )}
                 </div>
@@ -480,6 +554,9 @@ function useIntersectionObserver() {
 // ─── Main Page Component ────────────────────────────────
 export default function CareersPage() {
     useIntersectionObserver();
+
+    // State to toggle the Training Sprint section visibility
+    const [showTrainingSprint, setShowTrainingSprint] = useState(false);
 
     // FAQ Schema for structured data
     const faqSchema = {
@@ -534,12 +611,11 @@ export default function CareersPage() {
                         className="mb-20"
                     >
                         <div className="w-16 h-[2px] bg-accent mb-8" />
-                        <span className="section-label">// CAREERS</span>
                         <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-foreground tracking-tight leading-[1.1] mb-6">
-                            Build AI Systems For Real Businesses.
+                            Build Systems For Businesses
                         </h1>
                         <p className="text-lg sm:text-xl text-muted max-w-2xl leading-relaxed mb-8">
-                            Join the Kairos AI Studio. We hire and train AI automation builders, web developers, and data specialists to deliver real AI implementation for UK SMEs. Work from London or remote. Project-based contracts. Continuous flow.
+                            Join the Kairos Studio. We manage and match you with businesess. Work from London or remote. Project-based contracts. Continuous flow.
                         </p>
                         <div className="flex flex-wrap gap-4">
                             <Button href="#apply" variant="primary">
@@ -551,6 +627,7 @@ export default function CareersPage() {
                         </div>
                     </motion.div>
 
+
                     {/* SECTION: How It Works */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -559,7 +636,6 @@ export default function CareersPage() {
                         transition={{ duration: 0.6 }}
                         className="mb-20 fade-up"
                     >
-                        <span className="section-label">// PROCESS</span>
                         <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground mb-8">
                             How It Works
                         </h2>
@@ -596,7 +672,7 @@ export default function CareersPage() {
                         transition={{ duration: 0.6 }}
                         className="mb-20 fade-up"
                     >
-                        <span className="section-label">// TRACKS</span>
+
                         <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground mb-4">
                             Choose Your Track
                         </h2>
@@ -606,106 +682,131 @@ export default function CareersPage() {
                         <TrackSelector tracks={tracks} />
                     </motion.div>
 
-                    {/* SECTION: Training Sprint */}
+                    {/* SECTION: Training Sprint (Collapsible) */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="mb-20 fade-up"
+                        className="mb-20 fade-up relative"
                     >
-                        <span className="section-label">// TRAINING</span>
-                        <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground mb-4">
-                            The Kairos Training Sprint
-                        </h2>
-                        <p className="text-muted mb-8 max-w-2xl">
-                            We invest in your success. Every builder goes through our structured AI training programme to learn our tools, standards, and delivery process.
-                        </p>
+                        <div className="flex items-center justify-between mb-8">
+                            <div>
+                                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground mb-2 sm:mb-4">
+                                    The Kairos Training Sprint
+                                </h2>
+                                <p className="text-muted max-w-2xl">
+                                    We invest in your success. Every builder goes through our structured AI training programme to learn our tools, standards, and delivery process.
+                                </p>
+                            </div>
 
-                        {/* Training Timeline Stepper */}
-                        <div className="rounded-2xl bg-[#F5F3F0] p-8 sm:p-10 mb-8">
-                            <h3 className="font-heading text-xl font-bold text-foreground mb-8">
-                                Duration: {trainingSprint.duration}
-                            </h3>
-                            <div className="training-stepper fade-up">
-                                {trainingSprint.tracks[0].timeline.map((item, i) => {
-                                    const colonIndex = item.indexOf(':');
-                                    const title = colonIndex > 0 ? item.substring(0, colonIndex).trim() : '';
-                                    const description = colonIndex > 0 ? item.substring(colonIndex + 1).trim() : item;
-                                    return (
-                                        <div key={i} className={`stepper-node fade-up stagger-${i + 1}`}>
-                                            <div className="stepper-circle">{String(i + 1).padStart(2, '0')}</div>
-                                            <div className="stepper-content">
-                                                {title && <div className="stepper-title">{title}</div>}
-                                                <div className="stepper-description">{description}</div>
+                            {/* Toggle Button */}
+                            <button
+                                onClick={() => setShowTrainingSprint(!showTrainingSprint)}
+                                className="hidden sm:flex shrink-0 items-center gap-2 px-5 py-2.5 rounded-full border border-foreground/10 hover:border-foreground/20 bg-background hover:bg-foreground/[0.02] text-sm font-medium transition-all duration-300 ml-4 group"
+                            >
+                                {showTrainingSprint ? 'Hide details' : 'View the sprint'}
+                                <motion.svg
+                                    animate={{ rotate: showTrainingSprint ? 180 : 0 }}
+                                    transition={{ duration: 0.3 }}
+                                    width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-foreground/50 group-hover:text-foreground transition-colors"
+                                >
+                                    <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                </motion.svg>
+                            </button>
+                        </div>
+
+                        {/* Mobile Toggle Button */}
+                        <button
+                            onClick={() => setShowTrainingSprint(!showTrainingSprint)}
+                            className="sm:hidden w-full flex items-center justify-center gap-2 mb-8 px-5 py-3 rounded-full border border-foreground/10 bg-background text-sm font-medium transition-colors"
+                        >
+                            {showTrainingSprint ? 'Hide details' : 'View the training sprint'}
+                            <motion.svg
+                                animate={{ rotate: showTrainingSprint ? 180 : 0 }}
+                                transition={{ duration: 0.3 }}
+                                width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-foreground/50"
+                            >
+                                <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </motion.svg>
+                        </button>
+
+                        {/* Collapsible Content */}
+                        <AnimatePresence>
+                            {showTrainingSprint && (
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                    className="overflow-hidden"
+                                >
+                                    <div className="pt-2">
+                                        {/* Training Timeline Stepper */}
+                                        <div className="rounded-2xl bg-[#F5F3F0] p-8 sm:p-10 mb-8 border border-foreground/[0.04]">
+                                            <h3 className="font-heading text-xl font-bold text-foreground mb-8">
+                                                Duration: {trainingSprint.duration}
+                                            </h3>
+                                            <div className="training-stepper">
+                                                {trainingSprint.tracks[0].timeline.map((item, i) => {
+                                                    const colonIndex = item.indexOf(':');
+                                                    const title = colonIndex > 0 ? item.substring(0, colonIndex).trim() : '';
+                                                    const description = colonIndex > 0 ? item.substring(colonIndex + 1).trim() : item;
+                                                    return (
+                                                        <div key={i} className={`stepper-node stagger-${i + 1}`}>
+                                                            <div className="stepper-circle">{String(i + 1).padStart(2, '0')}</div>
+                                                            <div className="stepper-content">
+                                                                {title && <div className="stepper-title">{title}</div>}
+                                                                <div className="stepper-description">{description}</div>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
 
-                        {/* Training Example Card */}
-                        <div className="assessment-brief fade-up">
-                            <h3 className="font-heading text-lg font-bold mb-6">
-                                Training Example: AI Automation Builder
-                            </h3>
-                            <div className="space-y-6 text-sm">
-                                <div>
-                                    <span className="assessment-badge">TRACK</span>
-                                    <p className="leading-relaxed">AI Process Automation</p>
-                                </div>
-                                <div>
-                                    <span className="assessment-badge">WEEK 1</span>
-                                    <p className="leading-relaxed">You get access to the Kairos tool stack. Set up your environment — n8n, Make, OpenAI API, Airtable. Complete 3 guided micro-builds: a webhook listener, an AI email classifier, and a lead capture flow. You get annotated examples and a short video walkthrough for each.</p>
-                                </div>
-                                <div>
-                                    <span className="assessment-badge">WEEK 2</span>
-                                    <p className="leading-relaxed">You receive a real SME brief (anonymised). Map the client&apos;s process, choose your tools, and build a working automation. Daily async check-ins. Code review at the end of the week with written feedback.</p>
-                                </div>
-                                <div>
-                                    <span className="assessment-badge">WEEK 3-4</span>
-                                    <p className="leading-relaxed">Independent delivery. You own a live client project end-to-end. Build, test, document, and hand off. This becomes your first Kairos portfolio case study.</p>
-                                </div>
-                                <div>
-                                    <span className="assessment-badge">WHAT YOU LEAVE WITH</span>
-                                    <div className="mt-4 flex flex-wrap gap-2">
-                                        <span className="pill-tag pill-tag-for">A shipped automation in production</span>
-                                        <span className="pill-tag pill-tag-for">A documented case study</span>
-                                        <span className="pill-tag pill-tag-for">Code review feedback report</span>
-                                        <span className="pill-tag pill-tag-for">Access to the next client project</span>
+                                        {/* Training Example Card */}
+                                        <div className="assessment-brief border border-foreground/[0.04] bg-white rounded-2xl p-8 sm:p-10">
+                                            <h3 className="font-heading text-lg font-bold mb-6">
+                                                Training Example: AI Automation Builder
+                                            </h3>
+                                            <div className="space-y-6 text-sm">
+                                                <div>
+                                                    <span className="assessment-badge">TRACK</span>
+                                                    <p className="leading-relaxed font-medium">AI Process Automation</p>
+                                                </div>
+                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                                                    <div>
+                                                        <span className="assessment-badge">WEEK 1</span>
+                                                        <p className="leading-relaxed mt-2 text-foreground/70">You get access to the Kairos tool stack. Set up your environment — n8n, Make, OpenAI API, Airtable. Complete 3 guided micro-builds: a webhook listener, an AI email classifier, and a lead capture flow. You get annotated examples and a short video walkthrough for each.</p>
+                                                    </div>
+                                                    <div>
+                                                        <span className="assessment-badge">WEEK 2</span>
+                                                        <p className="leading-relaxed mt-2 text-foreground/70">You receive a real SME brief (anonymised). Map the client's process, choose your tools, and build a working automation. Daily async check-ins. Code review at the end of the week with written feedback.</p>
+                                                    </div>
+                                                    <div>
+                                                        <span className="assessment-badge">WEEK 3-4</span>
+                                                        <p className="leading-relaxed mt-2 text-foreground/70">Independent delivery. You own a live client project end-to-end. Build, test, document, and hand off. This becomes your first Kairos portfolio case study.</p>
+                                                    </div>
+                                                </div>
+                                                <div className="pt-6 border-t border-border/50">
+                                                    <span className="assessment-badge">WHAT YOU LEAVE WITH</span>
+                                                    <div className="mt-4 flex flex-wrap gap-2">
+                                                        <span className="pill-tag pill-tag-for">A shipped automation in production</span>
+                                                        <span className="pill-tag pill-tag-for">A documented case study</span>
+                                                        <span className="pill-tag pill-tag-for">Code review feedback report</span>
+                                                        <span className="pill-tag pill-tag-for">Access to the next client project</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </motion.div>
 
-                    {/* SECTION: Our Standards */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="mb-20 fade-up"
-                    >
-                        <span className="section-label">// STANDARDS</span>
-                        <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground mb-8">
-                            Our Standards
-                        </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            {standards[0].items.map((item, i) => (
-                                <div key={i} className={`standards-card card-lift fade-up stagger-${i + 1}`}>
-                                    <div className="standards-card-number">{String(i + 1).padStart(2, '0')}</div>
-                                    <h3 className="font-heading text-lg font-bold mb-2">
-                                        {item.heading}
-                                    </h3>
-                                    <p className="text-sm leading-relaxed">
-                                        {item.text}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </motion.div>
+
 
                     {/* SECTION: What You Get */}
                     <motion.div
@@ -715,7 +816,7 @@ export default function CareersPage() {
                         transition={{ duration: 0.6 }}
                         className="mb-20 fade-up"
                     >
-                        <span className="section-label">// BENEFITS</span>
+
                         <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground mb-8">
                             What You Get
                         </h2>
@@ -741,13 +842,13 @@ export default function CareersPage() {
 
                     {/* SECTION: Who This Is For */}
                     <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                         className="mb-20 fade-up"
                     >
-                        <span className="section-label">// FIT</span>
+
                         <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground mb-8">
                             Who This Is For
                         </h2>
@@ -773,11 +874,16 @@ export default function CareersPage() {
                                         <span key={i} className={`pill-tag pill-tag-not-for fade-up stagger-${i + 1}`}>
                                             {item}
                                         </span>
-                            ))}
-                        </div>
-                    </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
+
+                    {/* Application Form */}
+                    <div className="mb-20">
+                        <ApplicationForm />
+                    </div>
 
                     {/* SECTION: FAQ */}
                     <motion.div
@@ -787,17 +893,14 @@ export default function CareersPage() {
                         transition={{ duration: 0.6 }}
                         className="mb-20 fade-up"
                     >
-                        <span className="section-label">// FAQ</span>
+
                         <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground mb-8">
                             Frequently Asked Questions
                         </h2>
                         <Accordion items={faqs} />
                     </motion.div>
-
-                    {/* Application Form */}
-                    <ApplicationForm />
-                </div>
-            </main>
+                </div >
+            </main >
             <Footer />
             <StickyCTA href="#apply" label="Apply Now" />
         </>

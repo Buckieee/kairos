@@ -9,7 +9,7 @@ export default function Button({
 
     const variants = {
         primary:
-            'gradient-accent text-white font-semibold shadow-[0_2px_20px_rgba(184,150,78,0.25)] hover:shadow-[0_4px_30px_rgba(184,150,78,0.35)] hover:scale-[1.02] active:scale-[0.98]',
+            'gradient-accent text-white font-semibold shadow-[0_2px_20px_rgba(30,64,175,0.3)] hover:shadow-[0_4px_30px_rgba(225,29,72,0.35)] hover:scale-[1.02] active:scale-[0.98]',
         outline:
             'border border-foreground/12 text-foreground bg-transparent hover:bg-accent/[0.04] hover:border-accent/30 active:scale-[0.98]',
     };

@@ -15,7 +15,7 @@ export const NAV_LINKS = [
 export const HERO = {
     headline: 'The studio that powers your business',
     subheadline:
-        'Kairos designs and delivers automation, CRM, operational infrastructure and more',
+        'Kairos matches the right talent to solve your workflow challenges',
     microline: 'Fast, reliable, and built for growing teams',
     cta: 'Book a Discovery',
     ctaSecondary: 'Talk to an Expert',
@@ -36,13 +36,30 @@ export const HERO = {
 export const PROBLEMS = {
     titleBold: "You don't need more tools.",
     titleLight: 'You need structure.',
+    quotes: [
+        {
+            text: "AI is clearly the future, but we don't know where to begin.",
+            author: "SME Owner, Retail Shop, London"
+        },
+        {
+            text: "I just want real projects where I can apply what I'm learning and build a portfolio.",
+            author: "AI Student, Imperial College"
+        },
+        {
+            text: "Small firms don't usually engage with government guidance directly. They rely on trusted local intermediaries.",
+            author: "Policy Lead, UK SME Digital Adoption"
+        },
+        {
+            text: "We need real users and feedback, but reaching SMEs one by one is slow and expensive.",
+            author: "Founder, Early-Stage AI Startup"
+        }
+    ],
     bullets: [
-        'Leads get lost.',
-        'Manual tasks slow growth.',
-        "CRM doesn't reflect reality.",
-        'Reporting lacks clarity.',
-        'Automation is half-built.',
-        'Teams operate reactively.',
+        'AI adoption feels too complex.',
+        'Hiring verified tech talent is expensive.',
+        'Manual processes throttle growth.',
+        "Off-the-shelf tools don't fit.",
+        'Expensive agencies move too slow.',
     ],
 };
 
@@ -79,8 +96,8 @@ export const PILLARS = {
 export const PROCESS = {
     title: 'How it works ',
     steps: [
-        { num: '01', title: 'Discovery Call', desc: 'Identify bottlenecks and map high-leverage systems' },
-        { num: '02', title: 'Proposed plan within 48hrs', desc: 'Detailed fixed-scope proposal with exact deliverables' },
+        { num: '01', title: 'Discovery Phase', desc: 'Get to know you and your problem' },
+        { num: '02', title: 'Proposed Match within 48hrs', desc: 'Over 30 vetted talents within the system as of now' },
         { num: '03', title: 'Partnering', desc: 'Execute the build in a structured sprint for scale' },
     ],
     note: 'Single point of contact throughout',
@@ -106,6 +123,13 @@ export const WORK = {
             featured: true,
         },
         {
+            company: 'Nobank',
+            challenge: 'Building trust for a next-gen non-custodial smart wallet.',
+            build: ['Brand identity', 'Marketing site', 'Web3 integration flows'],
+            impact: ['Fast launch', 'High conversion'],
+            featured: true,
+        },
+        {
             company: 'B2B Startup',
             challenge: 'Manual lead routing caused delays.',
             build: ['CRM automation', 'AI lead scoring', 'Lifecycle workflows'],
@@ -122,7 +146,7 @@ export const REVIEWS = {
     items: [
         {
             name: 'Mahardika Prima',
-            role: 'Founder, Lofin',
+            role: 'Founder, NoBank',
             text: 'Kairos completely transformed how we handle our backend infrastructure. Their approach to systems automation saved us hundreds of hours and let us focus purely on growth and our users.',
             image: '/images/reviews/mahardika.jpg',
         },
@@ -147,11 +171,11 @@ export const REVIEWS = {
 export const WHY_KAIROS = {
     title: 'Why Kairos ',
     points: [
-        'End to End Delivery ',
-        'Vetted Talent ',
+        'Match Vetted  Talent',
         'Quality Execution ',
-        'Fast & Affordable ',
+        'Business Friendly ',
         'Made for Growing teams ',
+        '& We are nice :) '
     ],
 };
 

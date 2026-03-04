@@ -210,7 +210,7 @@ export default function Pillars() {
                     whileInView={{ scaleX: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="w-16 h-[2px] bg-foreground origin-left mb-8"
+                    className="w-16 h-[2px] bg-[#E11D48] origin-left mb-8"
                 />
                 <motion.h2
                     initial={{ opacity: 0, y: 30 }}

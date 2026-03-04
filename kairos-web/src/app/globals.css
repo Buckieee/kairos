@@ -23,6 +23,7 @@
   --color-violet: #1E40AF;
   --color-success: #16A34A;
   --color-error: #DC2626;
+  --color-red-accent: #E11D48;
 
   --font-heading: 'Space Grotesk', var(--font-space), sans-serif;
   --font-body: 'Inter', var(--font-inter), sans-serif;
@@ -213,11 +214,18 @@ body {
 
 /* ── Gradients ────────────────────────────────────── */
 .gradient-accent {
-  background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 40%, #3B82F6 100%);
+  background: linear-gradient(90deg, #1E3A8A 0%, #6B21A8 50%, #E11D48 100%);
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  transition: background-position 0.5s ease, box-shadow 0.3s ease;
+}
+
+.gradient-accent:hover {
+  background-position: 100% 50%;
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+  background: linear-gradient(135deg, #1E3A8A, #1E40AF, #E11D48);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

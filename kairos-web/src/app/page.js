@@ -15,12 +15,12 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <Problems />
         <HowItWorks />
         <Pillars />
         <Work />
         <Reviews />
         <WhyKairos />
-        <Problems />
         <Contact />
       </main>
       <Footer />

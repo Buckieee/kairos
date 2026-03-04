@@ -244,7 +244,7 @@ export default function Contact() {
                                             <button
                                                 type="submit"
                                                 disabled={status === 'loading'}
-                                                className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all duration-300 ${status === 'loading' ? 'bg-accent/80 text-white cursor-not-allowed' : 'bg-accent text-white hover:bg-accent-bright hover:shadow-[0_10px_30px_-10px_rgba(37,99,235,0.4)] hover:-translate-y-1'}`}
+                                                className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all duration-300 ${status === 'loading' ? 'bg-accent/80 text-white cursor-not-allowed' : 'bg-accent text-white hover:bg-[#E11D48] hover:shadow-[0_10px_30px_-10px_rgba(225,29,72,0.4)] hover:-translate-y-1'}`}
                                             >
                                                 {status === 'loading' ? (
                                                     <>

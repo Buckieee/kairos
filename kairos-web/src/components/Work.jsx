@@ -484,6 +484,155 @@ function TypeXCard() {
     );
 }
 
+/* ─── Nobank showcase data ─────────────────────────── */
+const nobankImages = [
+    { src: '/work/Screenshot 2026-03-04 at 14.55.12.png', label: 'Landing Page' },
+    { src: '/work/Screenshot 2026-03-04 at 14.55.42.png', label: 'Vault Interface' },
+];
+
+const nobankDeliverables = [
+    'Brand identity & guidelines',
+    'Interactive marketing site',
+    'Web3 wallet integrations',
+    'Waitlist & onboarding flows',
+];
+
+const nobankTags = ['Web3', 'Wallet', 'Brand', 'Full-stack'];
+
+/* ─── Nobank expandable card ───────────────────────── */
+function NobankCard() {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <motion.div
+            layout
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden cursor-pointer group rounded-2xl"
+            onClick={() => setIsOpen(!isOpen)}
+        >
+            {/* Card face — cool slate fill */}
+            <div className="aspect-square relative overflow-hidden bg-[#F1F5F9] transition-colors duration-500 group-hover:bg-[#E2E8F0]">
+                {/* Logo — image, scale + slight lift on hover */}
+                <div className="absolute inset-0 flex items-center justify-center p-12">
+                    <div className="group-hover:scale-[1.08] group-hover:-translate-y-1 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center">
+                        <img src="/work/nobank.png" alt="Nobank" className="w-[140px] sm:w-[160px] h-auto opacity-90 group-hover:opacity-100 transition-opacity duration-500 drop-shadow-sm" />
+                    </div>
+                </div>
+
+                {/* Bottom bar */}
+                <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 flex items-end justify-between">
+                    <div>
+                        <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground/90 mb-1">
+                            Nobank
+                        </h3>
+                        <div className="flex flex-wrap gap-1.5 max-w-[200px] opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                            <span className="text-[9px] tracking-wider uppercase text-foreground/50 font-medium">Web3</span>
+                            <span className="text-[9px] text-foreground/30">·</span>
+                            <span className="text-[9px] tracking-wider uppercase text-foreground/50 font-medium">Finance</span>
+                            <span className="text-[9px] text-foreground/30">·</span>
+                            <span className="text-[9px] tracking-wider uppercase text-foreground/50 font-medium">App</span>
+                        </div>
+                    </div>
+
+                    <div className="relative w-8 h-8 flex items-center justify-center">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-foreground/40 group-hover:opacity-0 group-hover:rotate-90 transition-all duration-300 absolute">
+                            <path d="M10 4V16M4 10H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-foreground/60 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300 absolute">
+                            <path d="M6 14L14 6M14 6H8M14 6V12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            {/* Expanded content */}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden"
+                    >
+                        <div className="bg-[#F1F5F9] border-t border-foreground/[0.06]">
+                            {/* Tags */}
+                            <div className="px-6 sm:px-8 pt-5 pb-4 flex flex-wrap gap-2">
+                                {nobankTags.map((tag) => (
+                                    <span key={tag} className="text-[10px] tracking-wider uppercase text-foreground/60 bg-foreground/[0.04] border border-foreground/[0.06] rounded-full px-3 py-1 font-medium">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+
+                            {/* Screenshots */}
+                            <div className="px-4 sm:px-6 pb-4 grid grid-cols-1 gap-3">
+                                {nobankImages.map((img, i) => (
+                                    <motion.a
+                                        key={img.src}
+                                        href="https://nobank.id/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: i * 0.08, duration: 0.5 }}
+                                        className="group/img relative block overflow-hidden rounded-xl border border-foreground/[0.06] hover:border-foreground/[0.12] transition-all duration-500 bg-white"
+                                    >
+                                        <div className="w-full aspect-video flex items-center justify-center p-6 sm:p-12">
+                                            <Image
+                                                src={img.src}
+                                                alt={img.label}
+                                                width={600}
+                                                height={350}
+                                                className="w-full h-auto object-cover group-hover/img:scale-[1.02] transition-transform duration-500 rounded-lg shadow-sm"
+                                            />
+                                        </div>
+                                        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-white/90 to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity duration-300">
+                                            <span className="text-[10px] tracking-wider uppercase text-foreground/60 font-medium">{img.label}</span>
+                                        </div>
+                                    </motion.a>
+                                ))}
+                            </div>
+
+                            {/* Deliverables */}
+                            <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                                <p className="text-xs font-medium uppercase tracking-[0.15em] text-muted-light mb-4">
+                                    What we built
+                                </p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5">
+                                    {nobankDeliverables.map((b) => (
+                                        <div key={b} className="flex items-center gap-3 text-sm text-foreground/70">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-foreground/20 shrink-0" />
+                                            {b}
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <a
+                                    href="https://nobank.id/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="inline-flex items-center gap-2 mt-6 text-sm text-foreground/70 hover:text-foreground transition-colors font-medium group/link"
+                                >
+                                    View live project
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="group-hover/link:translate-x-0.5 transition-transform">
+                                        <path d="M4 10L10 4M10 4H5M10 4V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
+    );
+}
+
 /* ─── Simple card (bento style) ───────────────────── */
 function SimpleCard({ project, index }) {
     return (
@@ -580,6 +729,7 @@ export default function Work() {
                 <RelayCard />
                 <LofinCard />
                 <TypeXCard />
+                <NobankCard />
 
                 {/* Other project cards */}
                 {others.map((c, i) => (
