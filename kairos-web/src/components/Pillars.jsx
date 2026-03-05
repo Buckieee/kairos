@@ -105,30 +105,30 @@ function PillarCard({ pillar, style, index }) {
                         <h3 className="font-heading text-base sm:text-lg font-bold text-foreground/80 group-hover:text-foreground transition-colors duration-300">
                             {pillar.title}
                         </h3>
-                        {/* Outcome — slides up on hover */}
-                        <p className="text-[11px] sm:text-xs text-foreground/40 group-hover:text-foreground/70 mt-1 max-w-[180px] opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                        {/* Outcome — slides up on hover for desktop, always visible on mobile */}
+                        <p className="text-[11px] sm:text-xs text-foreground/70 lg:text-foreground/40 lg:group-hover:text-foreground/70 mt-1 max-w-[180px] opacity-100 translate-y-0 lg:opacity-0 lg:group-hover:opacity-100 lg:translate-y-3 lg:group-hover:translate-y-0 transition-all duration-500 lg:delay-100">
                             {pillar.outcome}
                         </p>
                     </div>
 
-                    {/* + → arrow on hover */}
-                    <div className="relative w-8 h-8 flex items-center justify-center shrink-0">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-foreground/25 group-hover:opacity-0 group-hover:rotate-90 transition-all duration-300 absolute">
+                    {/* + → arrow on hover (Desktop only) */}
+                    <div className="relative w-8 h-8 hidden lg:flex items-center justify-center shrink-0">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-foreground/25 lg:group-hover:opacity-0 lg:group-hover:rotate-90 transition-all duration-300 absolute">
                             <path d="M9 4V14M4 9H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                         </svg>
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-foreground/50 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300 absolute">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-foreground/50 opacity-0 lg:group-hover:opacity-100 translate-y-1 lg:group-hover:translate-y-0 transition-all duration-300 absolute">
                             <path d="M5 13L13 5M13 5H7M13 5V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </div>
                 </div>
 
-                {/* Bullets — reveal on hover */}
-                <div className="overflow-hidden max-h-0 group-hover:max-h-[160px] opacity-0 group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] delay-100">
+                {/* Bullets — reveal on hover for desktop, always visible on mobile */}
+                <div className="overflow-hidden max-h-[160px] opacity-100 lg:max-h-0 lg:group-hover:max-h-[160px] lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:delay-100">
                     <div className="pt-5 flex flex-wrap gap-2 relative z-20">
                         {pillar.bullets.map((b, i) => (
                             <span
                                 key={b}
-                                className="text-[10px] tracking-widest uppercase text-foreground/50 bg-foreground/[0.03] border border-foreground/[0.05] group-hover:border-foreground/[0.1] rounded-full px-3 py-1.5 font-semibold transition-all duration-500 translate-y-2 group-hover:translate-y-0"
+                                className="text-[10px] tracking-widest uppercase text-foreground/50 bg-foreground/[0.03] border border-foreground/[0.05] lg:group-hover:border-foreground/[0.1] rounded-full px-3 py-1.5 font-semibold transition-all duration-500 lg:translate-y-2 lg:group-hover:translate-y-0"
                                 style={{ transitionDelay: `${150 + i * 75}ms` }}
                             >
                                 {b}

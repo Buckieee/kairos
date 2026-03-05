@@ -31,7 +31,7 @@ export default function Navbar() {
 
     return (
         <header
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
+            className={`fixed top-0 left-0 right-0 z-[110] transition-all duration-500 ${scrolled
                 ? 'bg-background/90 backdrop-blur-xl border-b border-border'
                 : 'bg-transparent'
                 }`}
@@ -84,7 +84,7 @@ export default function Navbar() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="fixed inset-0 bg-background/98 backdrop-blur-2xl md:hidden flex flex-col items-center justify-center z-40"
+                        className="fixed inset-0 bg-background/98 backdrop-blur-2xl md:hidden flex flex-col items-center justify-center z-[100]"
                     >
                         <div className="flex flex-col items-center gap-8">
                             {links.map((link, i) => (
