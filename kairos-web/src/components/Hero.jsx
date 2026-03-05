@@ -822,7 +822,7 @@ export default function Hero() {
                     </motion.div>
 
                     {/* Right — Matching Visual */}
-                    <div className="hidden lg:flex items-center justify-center">
+                    <div className="flex items-center justify-center mt-12 lg:mt-0 opacity-80 sm:opacity-100 scale-90 sm:scale-100">
                         <AbstractVisual />
                     </div>
                 </div>

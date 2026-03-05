@@ -21,12 +21,14 @@ export default function TrackSelector({ tracks, onTrackChange, className = '' })
 
     return (
         <div className={className}>
-            <div className="mb-8">
-                <SegmentToggle
-                    segments={segments}
-                    active={activeTrack}
-                    onChange={handleChange}
-                />
+            <div className="mb-8 w-full max-w-[100vw] overflow-x-auto scrollbar-none smooth-scroll">
+                <div className="min-w-max pb-2">
+                    <SegmentToggle
+                        segments={segments}
+                        active={activeTrack}
+                        onChange={handleChange}
+                    />
+                </div>
             </div>
 
             <motion.div

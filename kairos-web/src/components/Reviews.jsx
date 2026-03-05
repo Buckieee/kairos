@@ -25,7 +25,7 @@ function ReviewCard({ review, index }) {
             </div>
 
             {/* Overlapping Info Block */}
-            <div className="relative z-10 w-[105%] -ml-[2.5%] bg-accent p-6 sm:p-8 rounded-sm shadow-xl transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl">
+            <div className="relative z-10 w-[105%] -ml-[2.5%] bg-accent p-6 sm:p-8 rounded-sm shadow-xl transition-all duration-500 lg:group-hover:-translate-y-2 lg:group-hover:shadow-2xl">
 
                 <div className="flex items-start justify-between">
                     <div>
@@ -37,8 +37,8 @@ function ReviewCard({ review, index }) {
                         </p>
                     </div>
 
-                    {/* + → arrow on hover */}
-                    <div className="relative w-8 h-8 flex items-center justify-center shrink-0 mt-1">
+                    {/* + → arrow on hover (Desktop only) */}
+                    <div className="relative w-8 h-8 hidden lg:flex items-center justify-center shrink-0 mt-1">
                         <svg width="20" height="20" viewBox="0 0 18 18" fill="none" className="text-white/80 group-hover:opacity-0 group-hover:rotate-90 transition-all duration-300 absolute">
                             <path d="M9 4V14M4 9H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                         </svg>
@@ -48,8 +48,8 @@ function ReviewCard({ review, index }) {
                     </div>
                 </div>
 
-                {/* Review Text - Reveal on hover */}
-                <div className="overflow-hidden max-h-0 group-hover:max-h-[400px] opacity-0 group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                {/* Review Text - Reveal on hover for desktop, always visible on mobile */}
+                <div className="overflow-hidden max-h-[400px] opacity-100 lg:max-h-0 lg:group-hover:max-h-[400px] lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
                     <div className="pt-6">
                         <p className="text-sm sm:text-base text-white/90 leading-relaxed font-medium">
                             {review.text}

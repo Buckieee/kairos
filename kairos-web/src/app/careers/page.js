@@ -586,7 +586,7 @@ export default function CareersPage() {
             />
 
             <Navbar />
-            <main id="main-content" className="min-h-screen pt-32 pb-24">
+            <main id="main-content" className="min-h-screen pt-32 pb-24 overflow-x-hidden">
                 <div className="max-w-5xl mx-auto px-5 sm:px-8">
                     {/* Breadcrumb */}
                     <nav aria-label="Breadcrumb" className="mb-8">

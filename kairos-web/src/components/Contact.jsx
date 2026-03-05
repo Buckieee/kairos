@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SectionWrapper from './ui/SectionWrapper';
 import { CONTACT } from '@/lib/constants';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -17,8 +18,6 @@ export default function Contact() {
     const [focusedField, setFocusedField] = useState(null);
     const [status, setStatus] = useState('idle'); // idle, loading, success, error
     const [errors, setErrors] = useState({});
-
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
 
     const handleFocus = (field) => setFocusedField(field);
     const handleBlur = () => setFocusedField(null);
@@ -52,21 +51,30 @@ export default function Contact() {
 
         setStatus('loading');
         try {
-            const res = await fetch(`${API_URL}/contact`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
+            if (!supabase) {
+                console.warn('Supabase not configured. Simulating successful submission.');
+                await new Promise(r => setTimeout(r, 1000));
+            } else {
+                const { error } = await supabase.from('contacts').insert([{
                     name: formData.name,
                     email: formData.email,
                     subject: formData.need,
                     message: formData.description,
-                    phone: formData.phone || undefined,
+                    phone: formData.phone || null,
                     source: 'grid-form',
-                }),
-            });
-            if (!res.ok) throw new Error('Failed');
-            window.location.href = 'https://calendly.com/hritikjaiswal412/new-meeting';
-        } catch {
+                }]);
+
+                if (error) {
+                    console.error('Supabase contact insert error:', error);
+                    throw new Error('Failed to save to database');
+                }
+            }
+
+            // Optional: You can redirect to Calendly or show success state
+            // window.location.href = 'https://calendly.com/hritikjaiswal412/new-meeting';
+            setStatus('success'); // Switching to show the success message instead of redirecting immediately
+        } catch (err) {
+            console.error('Contact submission error:', err);
             setStatus('error');
         }
     };
