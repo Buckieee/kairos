@@ -70,9 +70,8 @@ export default function Contact() {
                 }
             }
 
-            // Optional: You can redirect to Calendly or show success state
-            // window.location.href = 'https://calendly.com/hritikjaiswal412/new-meeting';
-            setStatus('success'); // Switching to show the success message instead of redirecting immediately
+            // Redirect to Calendly upon successful submission
+            window.location.href = 'https://calendly.com/hritikjaiswal412/new-meeting';
         } catch (err) {
             console.error('Contact submission error:', err);
             setStatus('error');
