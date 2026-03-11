@@ -33,6 +33,26 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <head>
+        {/* Iubenda Cookie Consent */}
+        <Script id="iubenda-config" strategy="beforeInteractive">
+          {`
+            var _iub = _iub || [];
+            _iub.csConfiguration = {"siteId":4457489,"cookiePolicyId":99080165,"lang":"en","storage":{"useSiteId":true}};
+          `}
+        </Script>
+        <Script
+          src="https://cs.iubenda.com/autoblocking/4457489.js"
+          strategy="beforeInteractive"
+        />
+        <Script
+          src="//cdn.iubenda.com/cs/gpp/stub.js"
+          strategy="beforeInteractive"
+        />
+        <Script
+          src="//cdn.iubenda.com/cs/iubenda_cs.js"
+          strategy="beforeInteractive"
+        />
+        {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-1NEX4TCEZ4"
           strategy="afterInteractive"
