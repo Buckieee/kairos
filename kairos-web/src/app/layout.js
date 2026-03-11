@@ -32,25 +32,26 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
-      <head>
+      <head />
+      <body className="antialiased" suppressHydrationWarning>
         {/* Iubenda Cookie Consent */}
-        <Script id="iubenda-config" strategy="beforeInteractive">
+        <Script id="iubenda-config" strategy="afterInteractive">
           {`
             var _iub = _iub || [];
-            _iub.csConfiguration = {"siteId":4457489,"cookiePolicyId":99080165,"lang":"en","storage":{"useSiteId":true}};
+            _iub.csConfiguration = {"siteId":4457489,"cookiePolicyId":99080165,"lang":"en","storage":{"useSiteId":true},"banner":{"position":"bottom"}};
           `}
         </Script>
         <Script
           src="https://cs.iubenda.com/autoblocking/4457489.js"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
         />
         <Script
           src="//cdn.iubenda.com/cs/gpp/stub.js"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
         />
         <Script
           src="//cdn.iubenda.com/cs/iubenda_cs.js"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
         />
         {/* Google Analytics */}
         <Script
@@ -65,8 +66,6 @@ export default function RootLayout({ children }) {
             gtag('config', 'G-1NEX4TCEZ4');
           `}
         </Script>
-      </head>
-      <body className="antialiased">
         {children}
       </body>
     </html>

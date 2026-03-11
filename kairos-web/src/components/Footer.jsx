@@ -38,8 +38,16 @@ export default function Footer() {
                         <div>
                             <h4 className="text-xs uppercase tracking-[0.2em] text-muted-light mb-4">Legal</h4>
                             <div className="flex flex-col gap-3">
-                                <a href="#" className="text-sm text-muted transition-colors hover:text-foreground">Privacy</a>
-                                <a href="#" className="text-sm text-muted transition-colors hover:text-foreground">Terms</a>
+                                <a href="/privacy" className="text-sm text-muted transition-colors hover:text-foreground">Privacy</a>
+                                <a href="/terms" className="text-sm text-muted transition-colors hover:text-foreground">Terms</a>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 className="text-xs uppercase tracking-[0.2em] text-muted-light mb-4">Contact</h4>
+                            <div className="flex flex-col gap-3">
+                                <a href="mailto:fede@itskairos.uk" className="text-sm text-muted transition-colors hover:text-foreground">
+                                    fede@itskairos.uk
+                                </a>
                             </div>
                         </div>
                     </div>

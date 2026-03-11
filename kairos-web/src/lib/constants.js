@@ -141,7 +141,7 @@ export const WORK = {
 
 /* ── Reviews ──────────────────────────────────────── */
 export const REVIEWS = {
-    title: 'What founders say',
+    title: 'What our partners say',
     text: 'We partner with founders and operators who want to scale faster without compromising on quality or control.',
     items: [
         {

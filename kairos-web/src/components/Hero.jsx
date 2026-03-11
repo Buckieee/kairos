@@ -190,7 +190,7 @@ function BusinessCardStack({ pairs, activeIndex, phase }) {
             <motion.div
                 key={`biz-active-${activeIndex}`}
                 className="relative z-20"
-                initial={{ x: -140, opacity: 0, scale: 0.8, rotateY: -15 }}
+                initial={{ x: -40, opacity: 0.35, scale: 0.92, rotateY: -5 }}
                 animate={
                     phase === 'entering'
                         ? { x: 0, opacity: 1, scale: 1, rotateY: 0 }
@@ -198,7 +198,7 @@ function BusinessCardStack({ pairs, activeIndex, phase }) {
                             ? { x: 30, opacity: 1, scale: 0.98, rotateY: 0 }
                             : phase === 'merging'
                                 ? { x: 120, opacity: 0, scale: 0.3, rotateY: 10 }
-                                : { x: -140, opacity: 0, scale: 0.8, rotateY: -15 }
+                                : { x: -40, opacity: 0.35, scale: 0.92, rotateY: -5 }
                 }
                 transition={{
                     duration: phase === 'merging' ? 0.8 : 0.7,
@@ -269,7 +269,7 @@ function TalentCardStack({ pairs, activeIndex, phase }) {
             <motion.div
                 key={`tal-active-${activeIndex}`}
                 className="relative z-20"
-                initial={{ x: 140, opacity: 0, scale: 0.8, rotateY: 15 }}
+                initial={{ x: 40, opacity: 0.35, scale: 0.92, rotateY: 5 }}
                 animate={
                     phase === 'entering'
                         ? { x: 0, opacity: 1, scale: 1, rotateY: 0 }
@@ -277,7 +277,7 @@ function TalentCardStack({ pairs, activeIndex, phase }) {
                             ? { x: -30, opacity: 1, scale: 0.98, rotateY: 0 }
                             : phase === 'merging'
                                 ? { x: -120, opacity: 0, scale: 0.3, rotateY: -10 }
-                                : { x: 140, opacity: 0, scale: 0.8, rotateY: 15 }
+                                : { x: 40, opacity: 0.35, scale: 0.92, rotateY: 5 }
                 }
                 transition={{
                     duration: phase === 'merging' ? 0.8 : 0.7,
@@ -543,7 +543,7 @@ function AbstractVisual() {
             while (isMounted) {
                 setPhase('idle');
                 setShowResult(false);
-                await new Promise(r => setTimeout(r, 900));
+                await new Promise(r => setTimeout(r, 400));
                 if (!isMounted) break;
 
                 setPhase('entering');
