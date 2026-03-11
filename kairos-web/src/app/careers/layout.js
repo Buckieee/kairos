@@ -1,6 +1,6 @@
 // SEO Metadata for Careers Page
 export const metadata = {
-    title: 'AI Automation Jobs & Careers | Kairos AI Studio',
+    title: 'Careers | Kairos',
     description:
         'Join the Kairos AI Studio. We hire and train AI automation builders, web developers, and data specialists to deliver real systems for UK SMEs. Apply today.',
     keywords: [
