@@ -1,4 +1,9 @@
 import Navbar from '@/components/Navbar';
+
+export const metadata = {
+  title: 'Home | Kairos Studio',
+  description: 'Kairos Studio - Building systems for businesses.',
+};
 import Hero from '@/components/Hero';
 import Problems from '@/components/Problems';
 import Pillars from '@/components/Pillars';
