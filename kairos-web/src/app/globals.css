@@ -335,3 +335,15 @@ body {
   animation: ticker 20s linear infinite;
   width: max-content;
 }
+
+/* ── Hide Iubenda Floating Badge ──────────────────── */
+#iubenda-cs-badge, 
+div#iubenda-cs-cookie-policy-badge,
+.iubenda-cs-badge,
+#iubenda-cs-preferences-icon,
+/* The green keyhole badge wrapper */
+#iubenda-cs-badge-icon {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
