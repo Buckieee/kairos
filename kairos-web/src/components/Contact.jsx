@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import SectionWrapper from './ui/SectionWrapper';
 import { CONTACT } from '@/lib/constants';
 import { supabase } from '@/lib/supabaseClient';
+import { trackFormSubmit } from '@/lib/analytics';
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -69,6 +70,8 @@ export default function Contact() {
                     throw new Error('Failed to save to database');
                 }
             }
+
+            trackFormSubmit('contact_form');
 
             // Redirect to Calendly upon successful submission
             window.location.href = 'https://calendly.com/hritikjaiswal412/new-meeting';

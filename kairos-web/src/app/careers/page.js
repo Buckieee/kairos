@@ -9,6 +9,7 @@ import Accordion from '@/components/ui/Accordion';
 import StickyCTA from '@/components/ui/StickyCTA';
 import Button from '@/components/ui/Button';
 import { supabase } from '@/lib/supabaseClient';
+import { trackFormSubmit } from '@/lib/analytics';
 import './careers.css';
 
 // ─── SEO Metadata ──────────────────────────────────────
@@ -354,6 +355,8 @@ function ApplicationForm() {
                 ]);
 
             if (insertError) throw insertError;
+
+            trackFormSubmit('careers_application');
 
             setStatus('success');
             setForm({ name: '', email: '', track: '', portfolio: '', message: '' });

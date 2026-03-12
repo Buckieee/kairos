@@ -1,8 +1,12 @@
+import { trackButtonClick } from '@/lib/analytics';
+
 export default function Button({
     children,
     variant = 'primary',
     href,
     className = '',
+    onClick,
+    trackingLabel,
     ...props
 }) {
     const base = 'inline-flex items-center justify-center px-7 py-3.5 rounded-full font-medium text-sm tracking-wide transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent/30';
@@ -16,16 +20,25 @@ export default function Button({
 
     const classes = `${base} ${variants[variant]} ${className}`;
 
+    const handleClick = (e) => {
+        const label = trackingLabel || (typeof children === 'string' ? children : 'button');
+        trackButtonClick(label, href || 'button');
+        
+        if (onClick) {
+            onClick(e);
+        }
+    };
+
     if (href) {
         return (
-            <a href={href} className={classes} {...props}>
+            <a href={href} className={classes} onClick={handleClick} {...props}>
                 {children}
             </a>
         );
     }
 
     return (
-        <button className={classes} {...props}>
+        <button className={classes} onClick={handleClick} {...props}>
             {children}
         </button>
     );
